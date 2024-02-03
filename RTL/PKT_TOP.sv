@@ -2,7 +2,7 @@
 //
 //	AUTHOR		: MAHMOUD MAGDI
 //	
-//	Module Name : Packet Detector FSM Module 
+//	Module Name 	: Packet Detector FSM Module 
 //
 //	Description	: An FSM that detects the Good Packets, their count, and Type
 //				   
