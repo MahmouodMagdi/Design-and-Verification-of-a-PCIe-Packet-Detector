@@ -1,12 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////
 //
-//			**********  ICE POSITION FSM DESIGN  **********
-//
 //	AUTHOR		: MAHMOUD MAGDI
 //	
 //	Module Name : Packet Detector FSM Module 
 //
-//	Description	: A FSM that detects the Good Packets, their count, and Type
+//	Description	: An FSM that detects the Good Packets, their count, and Type
 //				   
 ///////////////////////////////////////////////////////////////////////////
 
@@ -20,24 +18,24 @@ module PKT_Detector #(
 ) (
 
     // Input Ports 
-    input   logic                           reset     ,                                                     // Active-Low Asynchornous reset
-    input   logic                           clk       ,                                                     
-    input   logic   [DATA_WIDTH - 1 : 0]    data_in   ,                                                     // Input data       
-    input   logic   			    		dataK     ,                                                     // Set to one whenever STP or END symbols are intended      
+    	input   logic                           reset     ,                                                     // Active-Low Asynchornous reset
+    	input   logic                           clk       ,                                                     
+    	input   logic   [DATA_WIDTH - 1 : 0]    data_in   ,                                                     // Input data       
+    	input   logic   			dataK     ,                                                     // Set to one whenever STP or END symbols are intended      
     
     // Output Ports 
-    output  logic   [PKT_CNT_WIDTH - 1 : 0] PKT_count ,                                                     // Number of good packets received 
-    output  logic   [OUT_PKT_WIDTH - 1 : 0] PKT       ,                                                     // 20-byte PKT concatenated together 
-    output  logic                           MRd		  , 
-	output 	logic 							MWr		  , 
-	output 	logic							IORd	  , 
-	output	logic							IOWr	  , 
-	output	logic							CfgRd0    , 
-	output	logic							CfgWr0    , 
-	output	logic							CfgRd1    , 
-	output	logic							CfgWr1    , 
-	output	logic							Cpl		  , 
-	output	logic							Cp1D        
+   	output  logic   [PKT_CNT_WIDTH - 1 : 0] PKT_count ,                                                     // Number of good packets received 
+    	output  logic   [OUT_PKT_WIDTH - 1 : 0] PKT       ,                                                     // 20-byte PKT concatenated together 
+    	output  logic                           MRd	  , 
+	output 	logic 				MWr	  , 
+	output 	logic				IORd	  , 
+	output	logic				IOWr	  , 
+	output	logic				CfgRd0    , 
+	output	logic				CfgWr0    , 
+	output	logic				CfgRd1    , 
+	output	logic				CfgWr1    , 
+	output	logic				Cpl	  , 
+	output	logic				Cp1D        
    
 );
 
@@ -50,7 +48,7 @@ logic [OUT_PKT_WIDTH - 1 : 0] PKT_REG;
 //////////////////////////////
 typedef enum logic {
     
-    IDLE    ,
+    	IDLE    ,
 	active
 	
 } state_t;
@@ -64,7 +62,7 @@ always_ff @( posedge clk or negedge reset ) begin : data_count
     if (!reset) 
     begin
         
-        data_counter <= 'b0;
+        	data_counter <= 'b0;
 		PKT_REG <= 'b0;
 		
     end 
@@ -74,13 +72,13 @@ always_ff @( posedge clk or negedge reset ) begin : data_count
 	if(next_state == IDLE)
 	begin
         	data_counter <= 'b0;	
-			PKT_REG <= PKT_REG;	
+		PKT_REG <= PKT_REG;	
 	end
 	else
 	begin
 
         	data_counter <= data_counter + 1;	
-			PKT_REG <= {data_in, PKT_REG[159:8]};
+		PKT_REG <= {data_in, PKT_REG[159:8]};
 
 	end
     
@@ -127,16 +125,16 @@ always_comb begin : Next_State_Logic
 
         active: begin
 		
-					if(data_counter == 20)
-					begin
-						next_state = IDLE;
-					end
-					else
-					begin
-						next_state = active;
-					end		
+			if(data_counter == 20)
+			begin
+				next_state = IDLE;
+			end
+			else
+			begin
+				next_state = active;
+			end		
 					
-				end
+		end
 
         
 	default: next_state = IDLE;
